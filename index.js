@@ -3,14 +3,14 @@ const axios = require("axios");
 const redis = require("redis");
 
 const app = express();
-//const cors = require("cors");
+const cors = require("cors");
 
-//app.use(cors());
+app.use(cors());
 
 //redis
 const redisPort = 6379;
 //const client = redis.createClient(redisPort);
-const client = redis.createClient({host: '35.223.238.250', port: redisPort});
+const client = redis.createClient({host: '34.71.227.51', port: redisPort});
 
 client.on("error", (err) => {
 	console.log(err);
@@ -30,8 +30,8 @@ app.get("/emails", async(req,res) => {
 				});
 			}
 			else {
-				const people = await axios.get(`http://35.223.238.250:8145/api/auth/emails`);
-				client.setex(JSON.stringify(people.data));
+				const people = await axios.get(`http://34.71.227.51:8145/api/auth/emails`);
+				client.setex(1,600,JSON.stringify(people.data));
 				res.status(200).send({
 					people: people.data,
 					message: "cache miss, data from REST-API"
@@ -40,7 +40,7 @@ app.get("/emails", async(req,res) => {
 
 		});
 	} catch (err) {
-		rest.status(500).send({message: err.message});
+		res.status(500).send({message: err.message});
 	}
 });
 
