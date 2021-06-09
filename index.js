@@ -9,7 +9,9 @@ app.use(cors());
 
 //redis
 const redisPort = 6379;
-const client = redis.createClient(redisPort);
+//const client = redis.createClient(redisPort);
+const client = redis.createClient({host: '35.223.238.250', port: redisPort});
+
 client.on("error", (err) => {
 	console.log(err);
 })
@@ -42,7 +44,7 @@ app.get("/emails", async(req,res) => {
 	}
 });
 
-app.listen(process.env.PORT || 8085, () => {
+app.listen(process.env.PORT || 8162, () => {
 	console.log("Node server started");
 });
 
